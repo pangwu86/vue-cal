@@ -1,12 +1,20 @@
 (function () {
 
-    //{
-    //    year: 2016,
-    //    month: 2,
-    //    day: 12,
-    //    text: "2016-01-02",
-    //    inMonth: true
-    //}
+    // *********************************** 基础方法
+
+    function getDayStr(date) {
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var mstr = m < 10 ? ("0" + m) : m;
+        var dstr = d < 10 ? ("0" + d) : d;
+        return "" + date.getFullYear() + "-" + mstr + "-" + dstr;
+    }
+
+    function getMonthStr(date) {
+        var m = date.getMonth() + 1;
+        var mstr = m < 10 ? "0" + m : m;
+        return "" + date.getFullYear() + "-" + mstr;
+    }
 
     function getDayEntity(y, m, d, currMonth) {
         var entity = {
@@ -18,19 +26,37 @@
         var dstr = d < 10 ? "0" + d : d;
         entity.text = entity.year + "-" + mstr + "-" + dstr;
         if (currMonth) {
-            entity.inMonth = m == currMonth;
+            entity.inMonth = (m == currMonth);
         }
         return entity;
     }
 
-    function getNextMonday(date) {
-        if (typeof  date == String) {
+    function getMonday(date, flag) {
+        if (typeof  date == "string") {
             date = new Date(date);
         }
+        var day = date.getDay() - 1;
+        if (day == -1) {
+            day = 6;
+        }
+        var start = new Date(date - 0 + -day * 86400000);
+        // 下一周
+        if (flag > 0) {
+            start = new Date(start - 0 + 7 * 86400000);
+        }
+        // 前一周
+        else if (flag < 0) {
+            start = new Date(start - 0 + -7 * 86400000);
+        }
+        // 本周
+        else {
+            // nothing
+        }
+        return start;
     }
 
     function getWeekDays(date) {
-        if (typeof  date == "string") {
+        if (typeof date == "string") {
             date = new Date(date);
         }
         var month = date.getMonth() + 1;
@@ -127,11 +153,232 @@
     }
 
 
+    // *********************************** vue组件
+    var MONTHS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    var WEEKS = ['一', '二', '三', '四', '五', '六', '日'];
+    var HOURS = [];
+    for (var i = 0; i < 24; i++) {
+        HOURS.push(i + "")
+    }
+
+    // 月视图
+    var VueCalMonthMixin = {
+        props: ['date'],
+        data: function () {
+            var y = this.date.getFullYear();
+            var m = this.date.getMonth() + 1;
+            return {
+                wtips: WEEKS,
+                mdays: getMonthDaysMatrix(y, m),
+                vcal: {
+                    year: y,
+                    month: m,
+                    info: getMonthStr(this.date),
+                    sel: "",
+                    currday: getDayStr(new Date()),
+                }
+            }
+        },
+        methods: {
+            refreshVcal: function (date) {
+                this.vcal.year = date.getFullYear();
+                this.vcal.month = date.getMonth() + 1;
+                this.refreshVcalInfo();
+            },
+            refreshVcalInfo: function () {
+                var mstr = this.vcal.month < 10 ? "0" + this.vcal.month : this.vcal.month;
+                this.vcal.info = this.vcal.year + "-" + mstr;
+                this.vcal.currday = getDayStr(new Date());
+                this.vcal.sel = "";
+                console.log(this.vcal.currday);
+            },
+            refreshCal: function () {
+                this.mdays = getMonthDaysMatrix(this.vcal.year, this.vcal.month);
+            },
+            toPrev: function () {
+                if (this.vcal.month == 1) {
+                    this.vcal.month = 12;
+                    this.vcal.year -= 1;
+                } else {
+                    this.vcal.month -= 1;
+                }
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            toNext: function () {
+                if (this.vcal.month == 12) {
+                    this.vcal.month = 1;
+                    this.vcal.year += 1;
+                } else {
+                    this.vcal.month += 1;
+                }
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            toToday: function () {
+                this.refreshVcal(new Date());
+                this.refreshCal();
+            },
+            selDay: function (day) {
+                if (day.inMonth) {
+                    this.vcal.sel = day.text;
+                }
+            }
+        }
+    };
+
+    var VueCalMonth = Vue.extend({
+        template: `
+            <div class="vcal">
+                <div class="vcal-header">
+                    <div class="vcal-info">{{vcal.info}}</div>
+                    <div class="vcal-btns">
+                        <span @click="toPrev"><</span>
+                        <span @click="toToday">Today</span>
+                        <span @click="toNext">></span>
+                    </div>
+                </div>
+                <div class="vcal-body">
+                    <div class="vcal-month-entity">
+                        <div class="header">
+                            <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
+                        </div>
+                        <div class="container">
+                            <div class="row" v-for="(ri, rdays) in mdays">
+                                <div class="vcal-matrix-entity day-entity"
+                                    @click="selDay(day)"
+                                    v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 'ds-select': vcal.sel == day.text}"
+                                    v-for="(di, day) in rdays">
+                                    <div class="day-tip">{{day.day}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        mixins: [VueCalMonthMixin]
+    });
+
+    // 年视图
+    var VueCalYearMixin = {
+        props: ['date'],
+        data: function () {
+            var y = this.date.getFullYear();
+            return {
+                mtips: MONTHS,
+                wtips: WEEKS,
+                ydays: getYearDaysM(y),
+                vcal: {
+                    year: y,
+                    info: "" + y,
+                    sel: "",
+                    currday: getDayStr(new Date()),
+                }
+            }
+        },
+        methods: {
+            refreshVcalInfo: function () {
+                this.vcal.info = this.vcal.year;
+                this.vcal.currday = getDayStr(new Date());
+                this.vcal.sel = "";
+            },
+            refreshCal: function () {
+                this.ydays = getYearDaysM(this.vcal.year);
+            },
+            toPrev: function () {
+                this.vcal.year -= 1;
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            toNext: function () {
+                this.vcal.year += 1;
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            toToday: function () {
+                this.vcal.year = new Date().getFullYear();
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            selDay: function (day) {
+                if (day.inMonth) {
+                    this.vcal.sel = day.text;
+                }
+            }
+        }
+    };
+
+    var VueCalYear = Vue.extend({
+        template: `
+            <div class="vcal">
+                <div class="vcal-header">
+                    <div class="vcal-info">{{vcal.info}}</div>
+                    <div class="vcal-btns">
+                        <span @click="toPrev"><</span>
+                        <span @click="toToday">Today</span>
+                        <span @click="toNext">></span>
+                    </div>
+                </div>
+                <div class="vcal-body">
+                    <div class="vcal-year-entity">
+                        <div class="vcal-year-month-wrap" v-for="(yi, mdays) in ydays">
+                            <div class="header">
+                                {{mtips[yi]}}
+                            </div>
+                            <div class="container">
+                                <div class="vcal-month-entity">
+                                    <div class="header">
+                                        <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="row" v-for="(ri, rdays) in mdays">
+                                            <div class="vcal-matrix-entity day-entity"
+                                                @click="selDay(day)"
+                                                v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 'ds-select': vcal.sel == day.text}"
+                                                v-for="(di, day) in rdays">
+                                                <div class="day-tip">{{day.day}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        mixins: [VueCalYearMixin]
+    });
+
+    // 周视图
+    var VueCalWeek = Vue.extend({
+        template: "",
+        props: {},
+        data: function () {
+            return {}
+        },
+        events: {},
+        methods: {}
+    });
+
+
     window.VueCal = {
+        // function
         yearDays: getYearDays,
         yearDaysM: getYearDaysM,
         monthDays: getMonthDays,
         monthDaysM: getMonthDaysMatrix,
-        weekDays: getWeekDays
+        weekDays: getWeekDays,
+        monday: getMonday,
+        // mixin
+        Mixin: {
+            Month: VueCalMonthMixin,
+            Year: VueCalYearMixin
+        },
+        // component
+        Month: VueCalMonth,
+        Year: VueCalYear,
+        Week: VueCalWeek
     };
 })();

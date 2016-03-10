@@ -3,10 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>基于vue的日历控件</title>
-    <script src="vue-cal.js"></script>
+    <script src="vue.min.js"></script>
+    <link rel="stylesheet" href="vue-cal.css">
+    <link rel="stylesheet" href="demo.css">
 </head>
 <body>
-<h1>月视图</h1>
+<script type="text/x-handlebars-template" id="vcal-month-mixin">
+    <div class="vcal">
+        <div class="vcal-header">
+            <div class="vcal-info">{{vcal.info}}</div>
+            <div class="vcal-btns">
+                <span @click="toPrev"><</span>
+                <span @click="toToday">Today</span>
+                <span @click="toNext">></span>
+            </div>
+        </div>
+        <div class="vcal-body">
+            <div class="vcal-month-entity">
+                <div class="header">
+                    <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
+                </div>
+                <div class="container">
+                    <div class="row" v-for="(ri, rdays) in mdays">
+                        <vcal-month-dayrender v-for="(di, day) in rdays" :day="day"></vcal-month-dayrender>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-handlebars-template" id="vcal-month-dayrender">
+    <div class="vcal-matrix-entity day-entity">
+        {{day.month}} - {{day.day}}
+    </div>
+</script>
 
+<script type="text/x-handlebars-template" id="vcal-year-mixin">
+
+</script>
+
+
+<h1>月视图</h1>
+<div class="demo-block">
+    <vcal-month :date="date">
+    </vcal-month>
+</div>
+<div class="demo-block">
+    <vcal-month-mixin :date="date">
+    </vcal-month-mixin>
+</div>
+<h1>年视图</h1>
+<div class="demo-block">
+    <vcal-year :date="date">
+    </vcal-year>
+</div>
+<div class="demo-block">
+    <vcal-year-mixin :date="date">
+    </vcal-year-mixin>
+</div>
+<h1>周视图</h1>
+<script src="vue-cal.js"></script>
+<script src="demo.js"></script>
 </body>
 </html>
