@@ -39,7 +39,29 @@
 </script>
 
 <script type="text/x-handlebars-template" id="vcal-year-mixin">
+</script>
 
+<script type="text/x-handlebars-template" id="vcal-week">
+    <div class="vcal">
+        <div class="vcal-header">
+            <div class="vcal-info">{{vcal.info}}</div>
+            <div class="vcal-btns">
+                <span @click="toPrev"><</span>
+                <span @click="toToday">Today</span>
+                <span @click="toNext">></span>
+            </div>
+        </div>
+        <div class="vcal-body">
+            <div class="vcal-month-entity">
+                <div class="header">
+                    <div class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips">{{wn}} ({{wdays[wi]}})</div>
+                </div>
+                <div class="container">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 
 
@@ -57,11 +79,11 @@
     <vcal-year :date="date">
     </vcal-year>
 </div>
-<div class="demo-block">
-    <vcal-year-mixin :date="date">
-    </vcal-year-mixin>
-</div>
 <h1>周视图</h1>
+<div class="demo-block">
+    <vcal-week :date="date">
+    </vcal-week>
+</div>
 <script src="vue-cal.js"></script>
 <script src="demo.js"></script>
 </body>

@@ -353,13 +353,48 @@
 
     // 周视图
     var VueCalWeek = Vue.extend({
-        template: "",
-        props: {},
+        template: "#vcal-week",
+        props: ['date'],
         data: function () {
-            return {}
+            return {
+                wtips: WEEKS,
+                wdays: getWeekDays(this.date),
+                vcal: {
+                    sel: "",
+                    currday: getDayStr(new Date()),
+                }
+            }
         },
-        events: {},
-        methods: {}
+        methods: {
+            refreshVcalInfo: function () {
+                this.vcal.info = this.vcal.year;
+                this.vcal.currday = getDayStr(new Date());
+                this.vcal.sel = "";
+            },
+            refreshCal: function () {
+                this.wdays = getWeekDays(this.vcal.year);
+            },
+            toPrev: function () {
+                this.vcal.year -= 1;
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            toNext: function () {
+                this.vcal.year += 1;
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            toToday: function () {
+                this.vcal.year = new Date().getFullYear();
+                this.refreshVcalInfo();
+                this.refreshCal();
+            },
+            selDay: function (day) {
+                if (day.inMonth) {
+                    this.vcal.sel = day.text;
+                }
+            }
+        }
     });
 
 

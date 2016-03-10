@@ -29,6 +29,7 @@ var demoMonth = new Vue({
         'vcal-month': VueCal.Month,
         'vcal-month-mixin': VueMonthMixin,
         'vcal-year': VueCal.Year,
-        'vcal-year-mixin': VueMonthMixin
+        'vcal-year-mixin': VueMonthMixin,
+        'vcal-week': VueCal.Week
     }
 });

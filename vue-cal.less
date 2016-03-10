@@ -85,7 +85,7 @@
 
 // 月视图
 
-@vmatrix-h: 30px;
+@vmatrix-h: 24px;
 @vmatrix-w: 100%/7;
 @vcal-border: 1px solid #eee;
 @vcal-heder-bg: #DCDCDC;
@@ -113,8 +113,8 @@
 
   &.week-tip {
     text-align: center;
-    height: 30px;
-    line-height: 30px;
+    height: @vmatrix-h * 1.5;
+    line-height: @vmatrix-h * 1.5;
     border-right: @vcal-border;
 
     &:last-child {
@@ -164,4 +164,16 @@
   padding: 16px;
   width: 25%;
   display: inline-block;
+
+  .header {
+    height: @vmatrix-h * 1.5;
+    line-height: @vmatrix-h * 1.5;
+  }
+
+  .vcal-matrix-entity {
+    &.week-tip {
+      height: @vmatrix-h;
+      line-height: @vmatrix-h;
+    }
+  }
 }

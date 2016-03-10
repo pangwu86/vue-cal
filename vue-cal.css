@@ -93,8 +93,8 @@
 }
 .vcal-matrix-entity.week-tip {
   text-align: center;
-  height: 30px;
-  line-height: 30px;
+  height: 36px;
+  line-height: 36px;
   border-right: 1px solid #eee;
 }
 .vcal-matrix-entity.week-tip:last-child {
@@ -104,8 +104,8 @@
   cursor: pointer;
 }
 .vcal-matrix-entity.day-entity .day-tip {
-  height: 30px;
-  line-height: 30px;
+  height: 24px;
+  line-height: 24px;
   text-align: center;
 }
 .vcal-matrix-entity.day-entity.ds-today .day-tip {
@@ -128,4 +128,12 @@
   padding: 16px;
   width: 25%;
   display: inline-block;
+}
+.vcal-year-month-wrap .header {
+  height: 36px;
+  line-height: 36px;
+}
+.vcal-year-month-wrap .vcal-matrix-entity.week-tip {
+  height: 24px;
+  line-height: 24px;
 }
