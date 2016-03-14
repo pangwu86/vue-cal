@@ -359,8 +359,8 @@
     });
 
     // 周视图
-    var VueCalWeek = Vue.extend({
-        template: "#vcal-week",
+
+    var VueCalWeekMixin = {
         props: ['date'],
         data: function () {
             var m = getMonday(this.date);
@@ -408,6 +408,41 @@
                 return wday.month + "/" + wday.day;
             }
         }
+    };
+
+    var VueCalWeek = Vue.extend({
+        template: `
+            <div class="vcal">
+                <div class="vcal-header">
+                    <div class="vcal-info">{{vcal.info}}</div>
+                    <div class="vcal-btns">
+                        <span @click="toPrev"><</span>
+                        <span @click="toToday">Today</span>
+                        <span @click="toNext">></span>
+                    </div>
+                </div>
+                <div class="vcal-body">
+                    <div class="vcal-cal-entity vcal-week-entity">
+                        <div class="header">
+                            <div class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips"
+                                 v-bind:class="{'ds-today': isCurrday(wi)}">{{wn}} ({{wdayStr(wi)}})
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="vcal-matrix-entity week-day-entity"
+                                 v-for="(wi, day) in wdays">
+                                <div class="day-hours">
+                                    <div class="vcal-hour-entity" v-for="ht in htips">
+                                        <div v-if="wi == 0" class="hour-tip">{{ht}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        mixins: [VueCalWeekMixin]
     });
 
 
