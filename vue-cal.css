@@ -77,63 +77,97 @@
   width: 100%;
   height: calc(100% - 50px);
 }
-.vcal-month-entity > .header {
+.vcal-cal-entity > .header {
   border: 1px solid #eee;
   border-bottom: none;
   background: #DCDCDC;
   color: #000;
   font-weight: bold;
 }
-.vcal-month-entity > .container {
+.vcal-cal-entity > .container {
   border: 1px solid #eee;
+}
+.vcal-cal-entity > .container > .row {
+  border-bottom: 1px solid #eee;
+}
+.vcal-cal-entity > .container > .row:last-child {
+  border-bottom: none;
 }
 .vcal-matrix-entity {
   display: inline-block;
   width: 14.28571429%;
+  border-right: 1px solid #eee;
+}
+.vcal-matrix-entity:last-child {
+  border-right: none;
 }
 .vcal-matrix-entity.week-tip {
   text-align: center;
   height: 36px;
   line-height: 36px;
-  border-right: 1px solid #eee;
 }
-.vcal-matrix-entity.week-tip:last-child {
-  border-right: none;
-}
-.vcal-matrix-entity.day-entity {
+.day-entity {
   cursor: pointer;
 }
-.vcal-matrix-entity.day-entity .day-tip {
+.day-entity .day-tip {
   height: 24px;
   line-height: 24px;
   text-align: center;
 }
-.vcal-matrix-entity.day-entity.ds-today .day-tip {
+.ds-today .day-tip {
   color: #f00;
 }
-.vcal-matrix-entity.day-entity.ds-select {
+.ds-today.week-tip {
+  color: #f00;
+}
+.ds-select {
   background: #c1edf6;
 }
-.vcal-matrix-entity.day-entity.ds-select .day-tip {
+.ds-select .day-tip {
   color: #FFF;
 }
-.vcal-matrix-entity.day-entity.ds-outmonth {
+.ds-outmonth {
   background: none;
   cursor: not-allowed;
 }
-.vcal-matrix-entity.day-entity.ds-outmonth .day-tip {
+.ds-outmonth .day-tip {
   color: #ccc;
 }
-.vcal-year-month-wrap {
+.vcal-week-entity > .header,
+.vcal-week-entity .container {
+  width: calc(100% - 30px);
+  margin-left: 30px;
+}
+.vcal-week-entity .vcal-hour-entity {
+  height: 28.8px;
+  border-bottom: 1px solid #eee;
+}
+.vcal-week-entity .vcal-hour-entity:last-child {
+  border-bottom: none;
+}
+.vcal-week-entity .hour-tip {
+  display: none;
+}
+.vcal-week-entity .week-day-entity:first-child .vcal-hour-entity {
+  position: relative;
+}
+.vcal-week-entity .week-day-entity:first-child .hour-tip {
+  display: block;
+  position: absolute;
+  top: -8px;
+  left: -30px;
+  color: #cccccc;
+}
+.vcal-year-entity .vcal-year-month-wrap {
   padding: 16px;
   width: 25%;
   display: inline-block;
 }
-.vcal-year-month-wrap .header {
+.vcal-year-entity .vcal-year-month-wrap > .header {
   height: 36px;
   line-height: 36px;
 }
-.vcal-year-month-wrap .vcal-matrix-entity.week-tip {
+.vcal-year-entity .vcal-year-month-wrap .vcal-matrix-entity.week-tip {
   height: 24px;
   line-height: 24px;
 }

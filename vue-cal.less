@@ -1,3 +1,5 @@
+@import "vue-cal-var";
+
 .clearfix {
   display: block;
   zoom: 1;
@@ -19,9 +21,6 @@
     box-sizing: border-box;
   }
 }
-
-@vh-height: 50px;
-@vhc-height: 50px - 20px;
 
 .vcal-header {
   width: 100%;
@@ -83,15 +82,7 @@
   height: calc(~"100% - @{vh-height}");
 }
 
-// 月视图
-
-@vmatrix-h: 24px;
-@vmatrix-w: 100%/7;
-@vcal-border: 1px solid #eee;
-@vcal-heder-bg: #DCDCDC;
-@vcal-day-bg: #c1edf6;
-
-.vcal-month-entity {
+.vcal-cal-entity {
 
   > .header {
     border: @vcal-border;
@@ -103,6 +94,15 @@
 
   > .container {
     border: @vcal-border;
+
+    > .row {
+      border-bottom: @vcal-border;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
   }
 
 }
@@ -110,70 +110,120 @@
 .vcal-matrix-entity {
   display: inline-block;
   width: @vmatrix-w;
+  border-right: @vcal-border;
+
+  &:last-child {
+    border-right: none;
+  }
 
   &.week-tip {
     text-align: center;
     height: @vmatrix-h * 1.5;
     line-height: @vmatrix-h * 1.5;
-    border-right: @vcal-border;
+  }
+}
+
+.day-entity {
+  cursor: pointer;
+  .day-tip {
+    height: @vmatrix-h;
+    line-height: @vmatrix-h;
+    text-align: center;
+  }
+}
+
+// day-status
+
+.ds-today {
+  .day-tip {
+    color: #f00;
+  }
+
+  &.week-tip {
+    color: #f00;
+  }
+}
+
+.ds-select {
+  background: @vcal-day-bg;
+  .day-tip {
+    color: #FFF;
+  }
+}
+
+.ds-outmonth {
+  background: none;
+  cursor: not-allowed;
+  .day-tip {
+    color: #ccc;
+  }
+}
+
+// 周视图
+.vcal-week-entity {
+
+  // 空出时间点来
+  > .header, .container {
+    width: calc(~"100% - @{vcal-weekday-sb-width}");
+    margin-left: @vcal-weekday-sb-width;
+  }
+
+  .vcal-hour-entity {
+    height: @vmatrix-h * 1.2;
+    border-bottom: @vcal-border;
 
     &:last-child {
-      border-right: none;
+      border-bottom: none;
     }
   }
 
-  &.day-entity {
-    cursor: pointer;
-    .day-tip {
-      height: @vmatrix-h;
-      line-height: @vmatrix-h;
-      text-align: center;
-    }
-
-    // day-status
-
-    &.ds-today {
-      .day-tip {
-        color: #f00;
-      }
-    }
-
-    &.ds-select {
-      background: @vcal-day-bg;
-      .day-tip {
-        color: #FFF;
-      }
-    }
-
-    &.ds-outmonth {
-      background: none;
-      cursor: not-allowed;
-      .day-tip {
-        color: #ccc;
-      }
-    }
-
+  .hour-tip {
+    display: none;
   }
+
+  .week-day-entity {
+    &:first-child {
+
+      .vcal-hour-entity {
+        position: relative;
+      }
+
+      .hour-tip {
+        display: block;
+        position: absolute;
+        top: -8px;
+        left: -@vcal-weekday-sb-width;
+        color: #cccccc;
+      }
+    }
+  }
+
+}
+
+// 月视图
+
+.vcal-month-entity {
+
 }
 
 // 年视图
 .vcal-year-entity {
-}
 
-.vcal-year-month-wrap {
-  padding: 16px;
-  width: 25%;
-  display: inline-block;
+  .vcal-year-month-wrap {
+    padding: 16px;
+    width: 25%;
+    display: inline-block;
 
-  .header {
-    height: @vmatrix-h * 1.5;
-    line-height: @vmatrix-h * 1.5;
-  }
-
-  .vcal-matrix-entity {
-    &.week-tip {
-      height: @vmatrix-h;
-      line-height: @vmatrix-h;
+    > .header {
+      height: @vmatrix-h * 1.5;
+      line-height: @vmatrix-h * 1.5;
+    }
+    .vcal-matrix-entity {
+      &.week-tip {
+        height: @vmatrix-h;
+        line-height: @vmatrix-h;
+      }
     }
   }
+
 }

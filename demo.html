@@ -21,7 +21,8 @@
         <div class="vcal-body">
             <div class="vcal-month-entity">
                 <div class="header">
-                    <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
+                    <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}
+                    </div>
                 </div>
                 <div class="container">
                     <div class="row" v-for="(ri, rdays) in mdays">
@@ -52,37 +53,40 @@
             </div>
         </div>
         <div class="vcal-body">
-            <div class="vcal-month-entity">
+            <div class="vcal-cal-entity vcal-week-entity">
                 <div class="header">
-                    <div class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips">{{wn}} ({{wdays[wi]}})</div>
+                    <div class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips"
+                         v-bind:class="{'ds-today': isCurrday(wi)}">{{wn}} ({{wdayStr(wi)}})
+                    </div>
                 </div>
                 <div class="container">
-
+                    <div class="vcal-matrix-entity week-day-entity"
+                         v-for="(wi, day) in wdays">
+                        <div class="day-hours">
+                            <div class="vcal-hour-entity" v-for="ht in htips">
+                                <div v-if="wi == 0" class="hour-tip">{{ht}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </script>
-
-
+<h1>周视图</h1>
+<div class="demo-block">
+    <vcal-week :date="date">
+    </vcal-week>
+</div>
 <h1>月视图</h1>
 <div class="demo-block">
     <vcal-month :date="date">
     </vcal-month>
 </div>
-<div class="demo-block">
-    <vcal-month-mixin :date="date">
-    </vcal-month-mixin>
-</div>
 <h1>年视图</h1>
 <div class="demo-block">
     <vcal-year :date="date">
     </vcal-year>
-</div>
-<h1>周视图</h1>
-<div class="demo-block">
-    <vcal-week :date="date">
-    </vcal-week>
 </div>
 <script src="vue-cal.js"></script>
 <script src="demo.js"></script>

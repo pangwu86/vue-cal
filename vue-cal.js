@@ -16,6 +16,13 @@
         return "" + date.getFullYear() + "-" + mstr;
     }
 
+    function getWeekNum(date) {
+        var y1 = new Date(date.getFullYear(), 0, 1);
+        var rq = date - y1;
+        var s1 = Math.ceil(rq / (24 * 60 * 60 * 1000));
+        return Math.ceil(s1 / 7);
+    }
+
     function getDayEntity(y, m, d, currMonth) {
         var entity = {
             'year': y,
@@ -239,7 +246,7 @@
                     </div>
                 </div>
                 <div class="vcal-body">
-                    <div class="vcal-month-entity">
+                    <div class="vcal-cal-entity vcal-month-entity">
                         <div class="header">
                             <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
                         </div>
@@ -321,13 +328,13 @@
                     </div>
                 </div>
                 <div class="vcal-body">
-                    <div class="vcal-year-entity">
+                    <div class="vcal-cal-entity vcal-year-entity">
                         <div class="vcal-year-month-wrap" v-for="(yi, mdays) in ydays">
                             <div class="header">
                                 {{mtips[yi]}}
                             </div>
                             <div class="container">
-                                <div class="vcal-month-entity">
+                                <div class="vcal-cal-entity vcal-month-entity">
                                     <div class="header">
                                         <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
                                     </div>
@@ -356,43 +363,49 @@
         template: "#vcal-week",
         props: ['date'],
         data: function () {
+            var m = getMonday(this.date);
+            var y = m.getFullYear();
             return {
+                htips: HOURS,
                 wtips: WEEKS,
-                wdays: getWeekDays(this.date),
+                wdays: getWeekDays(m),
                 vcal: {
-                    sel: "",
+                    year: y,
+                    mondy: m,
                     currday: getDayStr(new Date()),
+                    info: "Week " + getWeekNum(m) + "-" + y
                 }
             }
         },
         methods: {
             refreshVcalInfo: function () {
-                this.vcal.info = this.vcal.year;
-                this.vcal.currday = getDayStr(new Date());
-                this.vcal.sel = "";
+                this.vcal.year = this.vcal.mondy.getFullYear();
+                this.vcal.info = "Week " + getWeekNum(this.vcal.mondy) + "-" + this.vcal.year;
             },
             refreshCal: function () {
-                this.wdays = getWeekDays(this.vcal.year);
+                this.wdays = getWeekDays(this.vcal.mondy);
             },
             toPrev: function () {
-                this.vcal.year -= 1;
+                this.vcal.mondy = getMonday(this.vcal.mondy, -1);
                 this.refreshVcalInfo();
                 this.refreshCal();
             },
             toNext: function () {
-                this.vcal.year += 1;
+                this.vcal.mondy = getMonday(this.vcal.mondy, 1);
                 this.refreshVcalInfo();
                 this.refreshCal();
             },
             toToday: function () {
-                this.vcal.year = new Date().getFullYear();
+                this.vcal.mondy = getMonday(new Date(), 0);
                 this.refreshVcalInfo();
                 this.refreshCal();
             },
-            selDay: function (day) {
-                if (day.inMonth) {
-                    this.vcal.sel = day.text;
-                }
+            isCurrday: function (i) {
+                return this.wdays[i].text == this.vcal.currday;
+            },
+            wdayStr: function (i) {
+                var wday = this.wdays[i];
+                return wday.month + "/" + wday.day;
             }
         }
     });
