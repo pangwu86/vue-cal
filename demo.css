@@ -4,19 +4,40 @@
 }
 .month-day-item {
   position: relative;
-  min-height: 130px;
 }
 .month-day-item .day-tip {
   position: absolute;
   right: 4px;
   top: 4px;
 }
-.month-day-item .test-list {
+.year-day-item .scolor {
+  color: #fff;
+  font-size: 0.9rem;
+}
+.year-day-item.s5 {
+  color: #fff;
+  font-size: 0.9rem;
+  background: rgba(52, 152, 219, 0.8);
+}
+.year-day-item.s10 {
+  color: #fff;
+  font-size: 0.9rem;
+  background: rgba(231, 76, 60, 0.8);
+}
+.year-day-item.s15 {
+  color: #fff;
+  font-size: 0.9rem;
+  background: rgba(39, 174, 96, 0.8);
+}
+.year-day-item.ds-outmonth {
+  background: none;
+}
+.test-list {
   padding-top: 30px;
   padding-left: 4px;
   padding-right: 4px;
 }
-.month-day-item .test-item {
+.test-item {
   width: 100%;
   height: 30px;
   margin: 2px 0;

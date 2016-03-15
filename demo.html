@@ -10,24 +10,8 @@
 </head>
 <body>
 
-<!--原始样式-->
-<h1>周视图</h1>
-<div class="demo-block">
-    <vcal-week :date="date">
-    </vcal-week>
-</div>
-<h1>月视图</h1>
-<div class="demo-block">
-    <vcal-month :date="date">
-    </vcal-month>
-</div>
-<h1>年视图</h1>
-<div class="demo-block">
-    <vcal-year :date="date">
-    </vcal-year>
-</div>
-
 <!--自定义模板-->
+<!--自定义月视图-->
 <script type="text/x-handlebars-template" id="vcal-month-mixin">
     <div class="vcal">
         <div class="vcal-header">
@@ -39,39 +23,154 @@
             </div>
         </div>
         <div class="vcal-body">
-            <div class="vcal-cal-entity vcal-month-entity">
-                <div class="header">
-                    <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
-                </div>
-                <div class="container">
-                    <div class="row" v-for="(ri, rdays) in mdays">
-                        <vcal-month-dayrender v-for="(di, day) in rdays" :day="day" :vcal="vcal" :items="testItems(day)"></vcal-month-dayrender>
+            <table class="vcal-cal-entity vcal-month-entity">
+                <thead class="header">
+                <tr>
+                    <th class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</th>
+                </tr>
+                </thead>
+                <tbody class="container">
+                <tr class="row" v-for="(ri, rdays) in mdays">
+                    <td is="vcal-month-dayrender" v-for="(di, day) in rdays" :day="day" :vcal="vcal"
+                        :items="testItems(day)"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+<script type="text/x-handlebars-template" id="vcal-month-dayrender">
+    <td class="vcal-matrix-entity day-entity month-day-item"
+        v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 'ds-select': vcal.sel == day.text}">
+        <div class="day-tip">{{day.day}}</div>
+        <div class="test-list">
+            <div class="test-item" v-for="item in items">{{item}}</div>
+        </div>
+    </td>
+</script>
+
+<!--自定义年视图-->
+<script type="text/x-handlebars-template" id="vcal-year-mixin">
+    <div class="vcal">
+        <div class="vcal-header">
+            <div class="vcal-info">{{vcal.info}}</div>
+            <div class="vcal-btns">
+                <span @click="toPrev"><</span>
+                <span @click="toToday">Today</span>
+                <span @click="toNext">></span>
+            </div>
+        </div>
+        <div class="vcal-body">
+            <div class="vcal-cal-entity vcal-year-entity">
+                <div class="vcal-year-month-wrap" v-for="(yi, mdays) in ydays">
+                    <div class="header">
+                        {{mtips[yi]}}
+                    </div>
+                    <div class="container">
+                        <table class="vcal-cal-entity vcal-month-entity">
+                            <thead class="header">
+                            <tr>
+                                <th class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</th>
+                            </tr>
+                            </thead>
+                            <tbody class="container">
+                            <tr class="row" v-for="(ri, rdays) in mdays">
+                                <td is="vcal-year-dayrender" v-for="(di, day) in rdays" :day="day" :vcal="vcal"
+                                    :items="testItems(day)"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </script>
-<script type="text/x-handlebars-template" id="vcal-month-dayrender">
-    <div class="vcal-matrix-entity day-entity month-day-item"
-         v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 'ds-select': vcal.sel == day.text}">
+<script type="text/x-handlebars-template" id="vcal-year-dayrender">
+    <td class="vcal-matrix-entity day-entity year-day-item"
+        v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 's5' : items.length == 5, 's10' : items.length == 10, 's15' : items.length ==15}">
         <div class="day-tip">{{day.day}}</div>
-        <div class="test-list">
-            <!--<span v-for="n in 10">{{ n }} </span>-->
-            <div class="test-item" v-for="item in items">{{item}}</div>
+    </td>
+</script>
+
+<!--自定义周视图-->
+<script type="text/x-handlebars-template" id="vcal-week-mixin">
+    <div class="vcal">
+        <div class="vcal-header">
+            <div class="vcal-info">{{vcal.info}}</div>
+            <div class="vcal-btns">
+                <span @click="toPrev"><</span>
+                <span @click="toToday">Today</span>
+                <span @click="toNext">></span>
+            </div>
+        </div>
+        <div class="vcal-body">
+            <table class="vcal-cal-entity vcal-week-entity">
+                <thead class="header">
+                <tr>
+                    <th class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips"
+                        v-bind:class="{'ds-today': isCurrday(wi)}">{{wn}} ({{wdayStr(wi)}})
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="container">
+                <tr class="row">
+                    <td is="vcal-week-dayrender" v-for="(wi, day) in wdays" :day="day" :vcal="vcal"
+                        :items="testItems(day)"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </script>
-<script type="text/x-handlebars-template" id="vcal-year-mixin">
-</script>
-<script type="text/x-handlebars-template" id="vcal-week-mixin">
+
+<script type="text/x-handlebars-template" id="vcal-week-dayrender">
+    <td class="vcal-matrix-entity week-day-entity">
+        <div class="test-list">
+            <div class="test-item" v-for="item in items">{{item}}</div>
+        </div>
+    </td>
 </script>
 
-<!--融合样式-->
+<!--原始样式 - 融合样式-->
+
+<h1>月视图</h1>
+<div class="demo-block">
+    <vcal-month :date="date">
+    </vcal-month>
+</div>
+
 <h1>月视图(自定义)</h1>
 <div class="demo-block">
     <vcal-month-mixin :date="date">
     </vcal-month-mixin>
+</div>
+
+
+<h1>年视图</h1>
+<div class="demo-block">
+    <vcal-year :date="date">
+    </vcal-year>
+</div>
+
+
+<h1>年视图(自定义)</h1>
+<div class="demo-block">
+    <vcal-year-mixin :date="date">
+    </vcal-year-mixin>
+</div>
+
+
+<h1>周视图</h1>
+<div class="demo-block">
+    <vcal-week :date="date">
+    </vcal-week>
+</div>
+
+<h1>周视图(自定义)</h1>
+<div class="demo-block">
+    <vcal-week-mixin :date="date">
+    </vcal-week-mixin>
 </div>
 
 <script src="demo.js"></script>

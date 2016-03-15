@@ -18,6 +18,18 @@
 .vcal * {
   box-sizing: border-box;
 }
+.vcal table {
+  border-spacing: 0;
+}
+.vcal tr,
+.vcal th,
+.vcal td {
+  padding: 0;
+  margin: 0;
+}
+.vcal td {
+  vertical-align: top;
+}
 .vcal-header {
   width: 100%;
   height: 50px;
@@ -77,61 +89,20 @@
   width: 100%;
   height: calc(100% - 50px);
 }
+.vcal-cal-entity {
+  width: 100%;
+}
 .vcal-cal-entity > .header {
-  display: block;
-  zoom: 1;
-  border: 1px solid #eee;
-  border-bottom: none;
   background: #DCDCDC;
   color: #000;
   font-weight: bold;
 }
-.vcal-cal-entity > .header:after {
-  content: " ";
-  display: block;
-  font-size: 0;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-.vcal-cal-entity > .container {
-  display: block;
-  zoom: 1;
-  border: 1px solid #eee;
-}
-.vcal-cal-entity > .container:after {
-  content: " ";
-  display: block;
-  font-size: 0;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-.vcal-cal-entity > .container > .row {
-  display: block;
-  zoom: 1;
+.vcal-matrix-entity {
+  border-right: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
-.vcal-cal-entity > .container > .row:after {
-  content: " ";
-  display: block;
-  font-size: 0;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-.vcal-cal-entity > .container > .row:last-child {
-  border-bottom: none;
-}
-.vcal-matrix-entity {
-  display: block;
-  float: left;
-  width: 14.28571429%;
-  height: 100%;
-  border-right: 1px solid #eee;
-}
-.vcal-matrix-entity:last-child {
-  border-right: none;
+.vcal-matrix-entity:first-child {
+  border-left: 1px solid #eee;
 }
 .vcal-matrix-entity.week-tip {
   text-align: center;
@@ -165,8 +136,7 @@
 .ds-outmonth .day-tip {
   color: #ccc;
 }
-.vcal-week-entity > .header,
-.vcal-week-entity .container {
+.vcal-week-entity {
   width: calc(100% - 30px);
   margin-left: 30px;
 }
@@ -187,7 +157,7 @@
   display: block;
   position: absolute;
   top: -8px;
-  left: -30px;
+  left: -25px;
   color: #cccccc;
 }
 .vcal-year-entity .vcal-year-month-wrap {

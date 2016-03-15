@@ -20,6 +20,20 @@
   * {
     box-sizing: border-box;
   }
+
+  table {
+    border-spacing: 0;
+  }
+
+  tr, th, td {
+    padding: 0;
+    margin: 0;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
 }
 
 .vcal-header {
@@ -84,42 +98,22 @@
 
 .vcal-cal-entity {
 
+  width: 100%;
+
   > .header {
-    .clearfix;
-    border: @vcal-border;
-    border-bottom: none;
     background: @vcal-heder-bg;
     color: #000;
     font-weight: bold;
   }
 
-  > .container {
-    .clearfix;
-    border: @vcal-border;
-
-    > .row {
-      .clearfix;
-      border-bottom: @vcal-border;
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-
-  }
-
 }
 
 .vcal-matrix-entity {
-  // display: inline-block;
-  display: block;
-  float: left;
-  width: @vmatrix-w;
-  height: 100%;
   border-right: @vcal-border;
+  border-bottom: @vcal-border;
 
-  &:last-child {
-    border-right: none;
+  &:first-child {
+    border-left: @vcal-border;
   }
 
   &.week-tip {
@@ -169,10 +163,8 @@
 .vcal-week-entity {
 
   // 空出时间点来
-  > .header, .container {
-    width: calc(~"100% - @{vcal-weekday-sb-width}");
-    margin-left: @vcal-weekday-sb-width;
-  }
+  width: calc(~"100% - @{vcal-weekday-sb-width}");
+  margin-left: @vcal-weekday-sb-width;
 
   .vcal-hour-entity {
     height: @vmatrix-h * 1.2;
@@ -198,7 +190,7 @@
         display: block;
         position: absolute;
         top: -8px;
-        left: -@vcal-weekday-sb-width;
+        left: -@vcal-weekday-sb-width + 5;
         color: #cccccc;
       }
     }

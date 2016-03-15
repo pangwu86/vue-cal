@@ -246,21 +246,23 @@
                     </div>
                 </div>
                 <div class="vcal-body">
-                    <div class="vcal-cal-entity vcal-month-entity">
-                        <div class="header">
-                            <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
-                        </div>
-                        <div class="container">
-                            <div class="row" v-for="(ri, rdays) in mdays">
-                                <div class="vcal-matrix-entity day-entity"
+                    <table class="vcal-cal-entity vcal-month-entity">
+                        <thead class="header">
+                            <tr>
+                                <th class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="container">
+                            <tr class="row" v-for="(ri, rdays) in mdays">
+                                <td class="vcal-matrix-entity day-entity"
                                     @click="selDay(day)"
                                     v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 'ds-select': vcal.sel == day.text}"
                                     v-for="(di, day) in rdays">
                                     <div class="day-tip">{{day.day}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         `,
@@ -334,21 +336,23 @@
                                 {{mtips[yi]}}
                             </div>
                             <div class="container">
-                                <div class="vcal-cal-entity vcal-month-entity">
-                                    <div class="header">
-                                        <div class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</div>
-                                    </div>
-                                    <div class="container">
-                                        <div class="row" v-for="(ri, rdays) in mdays">
-                                            <div class="vcal-matrix-entity day-entity"
+                                <table class="vcal-cal-entity vcal-month-entity">
+                                    <thead class="header">
+                                        <tr>
+                                            <th class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="container">
+                                        <tr class="row" v-for="(ri, rdays) in mdays">
+                                            <td class="vcal-matrix-entity day-entity"
                                                 @click="selDay(day)"
                                                 v-bind:class="{'ds-outmonth': !day.inMonth, 'ds-today': day.text == vcal.currday, 'ds-select': vcal.sel == day.text}"
                                                 v-for="(di, day) in rdays">
                                                 <div class="day-tip">{{day.day}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -422,23 +426,27 @@
                     </div>
                 </div>
                 <div class="vcal-body">
-                    <div class="vcal-cal-entity vcal-week-entity">
-                        <div class="header">
-                            <div class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips"
-                                 v-bind:class="{'ds-today': isCurrday(wi)}">{{wn}} ({{wdayStr(wi)}})
-                            </div>
-                        </div>
-                        <div class="container">
-                            <div class="vcal-matrix-entity week-day-entity"
-                                 v-for="(wi, day) in wdays">
-                                <div class="day-hours">
-                                    <div class="vcal-hour-entity" v-for="ht in htips">
-                                        <div v-if="wi == 0" class="hour-tip">{{ht}}</div>
+                    <table class="vcal-cal-entity vcal-week-entity">
+                        <thead class="header">
+                            <tr>
+                                <th class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips"
+                                     v-bind:class="{'ds-today': isCurrday(wi)}">{{wn}} ({{wdayStr(wi)}})
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="container">
+                            <tr class="row">
+                                <td class="vcal-matrix-entity week-day-entity"
+                                    v-for="(wi, day) in wdays">
+                                    <div class="day-hours">
+                                        <div class="vcal-hour-entity" v-for="ht in htips">
+                                            <div v-if="wi == 0" class="hour-tip">{{ht}}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         `,
@@ -457,7 +465,8 @@
         // mixin
         Mixin: {
             Month: VueCalMonthMixin,
-            Year: VueCalYearMixin
+            Year: VueCalYearMixin,
+            Week: VueCalWeekMixin
         },
         // component
         Month: VueCalMonth,
