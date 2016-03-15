@@ -78,24 +78,56 @@
   height: calc(100% - 50px);
 }
 .vcal-cal-entity > .header {
+  display: block;
+  zoom: 1;
   border: 1px solid #eee;
   border-bottom: none;
   background: #DCDCDC;
   color: #000;
   font-weight: bold;
 }
+.vcal-cal-entity > .header:after {
+  content: " ";
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
 .vcal-cal-entity > .container {
+  display: block;
+  zoom: 1;
   border: 1px solid #eee;
 }
+.vcal-cal-entity > .container:after {
+  content: " ";
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
 .vcal-cal-entity > .container > .row {
+  display: block;
+  zoom: 1;
   border-bottom: 1px solid #eee;
+}
+.vcal-cal-entity > .container > .row:after {
+  content: " ";
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
 .vcal-cal-entity > .container > .row:last-child {
   border-bottom: none;
 }
 .vcal-matrix-entity {
-  display: inline-block;
+  display: block;
+  float: left;
   width: 14.28571429%;
+  height: 100%;
   border-right: 1px solid #eee;
 }
 .vcal-matrix-entity:last-child {

@@ -85,6 +85,7 @@
 .vcal-cal-entity {
 
   > .header {
+    .clearfix;
     border: @vcal-border;
     border-bottom: none;
     background: @vcal-heder-bg;
@@ -93,9 +94,11 @@
   }
 
   > .container {
+    .clearfix;
     border: @vcal-border;
 
     > .row {
+      .clearfix;
       border-bottom: @vcal-border;
 
       &:last-child {
@@ -108,8 +111,11 @@
 }
 
 .vcal-matrix-entity {
-  display: inline-block;
+  // display: inline-block;
+  display: block;
+  float: left;
   width: @vmatrix-w;
+  height: 100%;
   border-right: @vcal-border;
 
   &:last-child {

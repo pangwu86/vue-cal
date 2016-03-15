@@ -2,18 +2,32 @@ var VueMonthMixin = Vue.extend({
     template: "#vcal-month-mixin",
     mixins: [VueCal.Mixin.Month],
     methods: {
-        rNum: function (day) {
-            return Math.floor(Math.random(day) * 1);
+        hi: function () {
+            console.log('hi');
+        },
+        testItems: function (day) {
+            var arr = [];
+            if (day.inMonth) {
+                arr.push('1');
+            }
+            if (day.day % 3 == 0) {
+                arr.push('2');
+            }
+            if (day.day % 5 == 0) {
+                arr.push('3');
+            }
+            return arr;
         }
     },
     components: {
-        'vcal-month-dayrender' : {
+        'vcal-month-dayrender': {
             template: "#vcal-month-dayrender",
-            props: ['day'],
+            props: ['day', 'vcal', 'items'],
             methods: {}
         }
     },
     ready: function () {
+        this.hi();
     }
 });
 
