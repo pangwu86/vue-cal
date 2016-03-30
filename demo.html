@@ -24,13 +24,13 @@
         </div>
         <div class="vcal-body">
             <table class="vcal-cal-entity vcal-month-entity">
-                <thead class="header">
+                <thead class="vheader">
                 <tr>
                     <th class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</th>
                 </tr>
                 </thead>
-                <tbody class="container">
-                <tr class="row" v-for="(ri, rdays) in mdays">
+                <tbody class="vcontainer">
+                <tr class="vrow" v-for="(ri, rdays) in mdays">
                     <td is="vcal-month-dayrender" v-for="(di, day) in rdays" :day="day" :vcal="vcal"
                         :items="testItems(day)"></td>
                 </tr>
@@ -63,18 +63,18 @@
         <div class="vcal-body">
             <div class="vcal-cal-entity vcal-year-entity">
                 <div class="vcal-year-month-wrap" v-for="(yi, mdays) in ydays">
-                    <div class="header">
+                    <div class="vheader">
                         {{mtips[yi]}}
                     </div>
-                    <div class="container">
+                    <div class="vcontainer">
                         <table class="vcal-cal-entity vcal-month-entity">
-                            <thead class="header">
+                            <thead class="vheader">
                             <tr>
                                 <th class="vcal-matrix-entity week-tip" v-for="(index, wn) in wtips">{{wn}}</th>
                             </tr>
                             </thead>
-                            <tbody class="container">
-                            <tr class="row" v-for="(ri, rdays) in mdays">
+                            <tbody class="vcontainer">
+                            <tr class="vrow" v-for="(ri, rdays) in mdays">
                                 <td is="vcal-year-dayrender" v-for="(di, day) in rdays" :day="day" :vcal="vcal"
                                     :items="testItems(day)"></td>
                             </tr>
@@ -106,15 +106,15 @@
         </div>
         <div class="vcal-body">
             <table class="vcal-cal-entity vcal-week-entity">
-                <thead class="header">
+                <thead class="vheader">
                 <tr>
                     <th class="vcal-matrix-entity week-tip" v-for="(wi, wn) in wtips"
                         v-bind:class="{'ds-today': isCurrday(wi)}">{{wn}} ({{wdayStr(wi)}})
                     </th>
                 </tr>
                 </thead>
-                <tbody class="container">
-                <tr class="row">
+                <tbody class="vcontainer">
+                <tr class="vrow">
                     <td is="vcal-week-dayrender" v-for="(wi, day) in wdays" :day="day" :vcal="vcal"
                         :items="testItems(day)"></td>
                 </tr>
